@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Arhaan!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* GENERAL STYLES */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            color: #4a4a4a;
+            /* GRADIENT BACKGROUND: Soft Pink to Cream */
+            background: linear-gradient(135deg, #fff0f3 0%, #fffaf6 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden; /* For the floating hearts */
+        }
+
+        /* HEADER */
+        h1 {
+            /* ACCENT COLOR: #ff6fa8 */
+            color: #ff6fa8;
+            font-size: clamp(2rem, 8vw, 4rem);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(255, 111, 168, 0.2);
+            font-weight: 700;
+        }
+
+        /* MESSAGE CONTAINER */
+        #message-container {
+            max-width: 800px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+        }
+
+        /* MESSAGE LINES */
+        .message-line {
+            font-size: clamp(1rem, 4vw, 1.4rem);
+            line-height: 1.6;
+            margin: 15px 0;
+            opacity: 0;
+            transition: opacity 1s;
+            font-weight: 400;
+        }
+
+        .message-line:last-child {
+            font-weight: 700;
+            /* ACCENT COLOR: #ff6fa8 */
+            color: #ff6fa8;
+        }
+
+        /* TAGLINE */
+        #tagline {
+            font-size: clamp(1.1rem, 5vw, 1.8rem);
+            font-weight: 700;
+            margin-top: 30px;
+            padding: 10px;
+            border-radius: 10px;
+            /* ACCENT COLOR: #ff6fa8 */
+            background-color: #ff6fa8;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transition: opacity 1s 5s; /* Delay fade in */
+        }
+
+        /* BUTTON STYLES */
+        .back-button {
+            /* ACCENT COLOR: #ff6fa8 */
+            background-color: #ff6fa8;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(255, 111, 168, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 40px;
+            opacity: 0;
+            transition: opacity 1s 6s; /* Delay fade in */
+        }
+
+        .back-button:hover {
+            background-color: #ff5599;
+            box-shadow: 0 8px 15px rgba(255, 85, 153, 0.5);
+        }
+
+        /* FLOATING HEARTS ANIMATION */
+        .heart {
+            /* ACCENT COLOR: #ff6fa8 */
+            color: #ff6fa8;
+            font-size: 25px;
+            position: absolute;
+            bottom: -50px;
+            animation: float-up 10s infinite linear;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) scale(1.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <audio id="bg-music" loop autoplay>
+        <source src="piano_music.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div id="message-container">
+        <h1>🎂 Happy Birthday Arhaan 💕</h1>
+        
+        <p id="line-1" class="message-line">We met by coincidence... yet it became the most beautiful memory of my life.</p>
+        <p id="line-2" class="message-line">How we became this close still feels like magic 💕</p>
+        <p id="line-3" class="message-line">How you became the only one my soul craves for... I’ll never know 💞</p>
+        <p id="line-4" class="message-line">You know, there aren’t enough words to express what I feel for you —</p>
+        <p id="line-5" class="message-line">But all I can say is... **‘My heart beats in your rhythm.’** ❤️✨</p>
+        
+        <p id="tagline">“Wishing you a very Happy Birthday from the cutest trouble you can ever have 💫”</p>
+        
+        <button id="back-btn" class="back-button" onclick="window.location.href='index.html'">
+            🎁 Back to the Gift
+        </button>
+    </div>
+
+    <script>
+        // --- ANIMATED LINE FADE-IN ---
+        const lines = [
+            document.getElementById('line-1'),
+            document.getElementById('line-2'),
+            document.getElementById('line-3'),
+            document.getElementById('line-4'),
+            document.getElementById('line-5')
+        ];
+        const tagline = document.getElementById('tagline');
+        const backBtn = document.getElementById('back-btn');
+
+        // Function to fade in elements sequentially
+        function fadeInLines() {
+            let delay = 500; // Initial delay
+            lines.forEach((line, index) => {
+                setTimeout(() => {
+                    line.style.opacity = 1;
+                }, delay + index * 1000); // 1-second interval between lines
+            });
+            
+            // Fade in tagline and button after lines are done
+            setTimeout(() => {
+                tagline.style.opacity = 1;
+            }, delay + lines.length * 1000 + 1000); // 1s after last line
+
+            setTimeout(() => {
+                backBtn.style.opacity = 1;
+            }, delay + lines.length * 1000 + 2000); // 2s after last line
+        }
+
+        // --- FLOATING HEARTS GENERATOR ---
+        const heartsCount = 20; // Number of hearts
+        const emojis = ['❤️', '💕', '💞', '💖'];
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+
+            // Random horizontal position
+            const left = Math.random() * 100; 
+            heart.style.left = `${left}vw`;
+
+            // Random animation duration for variety
+            const duration = Math.random() * 8 + 7; // 7s to 15s
+            heart.style.animationDuration = `${duration}s`;
+
+            // Random delay so they don't all start at once
+            const delay = Math.random() * -duration; // Negative delay starts them mid-animation
+            heart.style.animationDelay = `${delay}s`;
+
+            document.body.appendChild(heart);
+        }
+
+        // --- AUTOPLAY MUSIC FIX (Browser restriction) ---
+        // Browsers often block autoplay unless the user has interacted.
+        // This attempts to start the music on a dummy click/interaction, but it's not guaranteed.
+        function startMusic() {
+            const music = document.getElementById('bg-music');
+            music.volume = 0.5; // Set a pleasant volume
+            music.play().catch(e => console.log("Music autoplay failed:", e));
+        }
+
+        // Add an event listener to the whole document to try and start music on the first click/touch
+        document.addEventListener('click', startMusic, { once: true });
+        document.addEventListener('touchstart', startMusic, { once: true });
+        
+        // --- START ALL EFFECTS ---
+        window.onload = () => {
+            fadeInLines();
+            for (let i = 0; i < heartsCount; i++) {
+                createHeart();
+            }
+        };
+
+    </script>
+</body>
+</html>
