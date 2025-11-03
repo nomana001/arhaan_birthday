@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday 💕</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffd6e8, #fff4f4);
+      font-family: "Poppins", sans-serif;
+      overflow: hidden;
+      color: #444;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-top: 80px;
+      color: #ff6fa8;
+      text-shadow: 1px 1px 3px rgba(255, 105, 180, 0.4);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    p {
+      font-size: 1.3em;
+      max-width: 600px;
+      margin: 20px auto;
+      line-height: 1.6;
+      opacity: 0;
+      transition: opacity 1s ease-in;
+    }
+
+    #tagline {
+      margin-top: 30px;
+      font-weight: bold;
+      font-size: 1.2em;
+      color: #ff4081;
+      opacity: 0;
+    }
+
+    button {
+      background: #ff80ab;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 1em;
+      cursor: pointer;
+      margin-top: 40px;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    button:hover {
+      background: #ff5f9e;
+      transform: scale(1.05);
+    }
+
+    .heart {
+      position: fixed;
+      color: #ff5c8d;
+      font-size: 20px;
+      animation: fall 6s linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10%); opacity: 1; }
+      100% { transform: translateY(110vh); opacity: 0; }
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎂 Happy Birthday Arhaan 💕</h1>
+  <p id="line1">We met by coincidence... yet it became the most beautiful memory of my life.</p>
+  <p id="line2">How we became this close still feels like magic 💕</p>
+  <p id="line3">How you became the only one my soul craves for... I’ll never know 💞</p>
+  <p id="line4">You know, there aren’t enough words to express what I feel for you —</p>
+  <p id="line5"><i>but all I can say is... "My heart beats in your rhythm." ❤️✨</i></p>
+  
+  <p id="tagline">Wishing you a very Happy Birthday from the cutest trouble you can ever have 💫</p>
+
+  <button id="revealBtn">Click for a surprise 💖</button>
+
+  <audio id="bgMusic" loop autoplay>
+    <source src="https://cdn.pixabay.com/download/audio/2023/01/25/audio_40488e1d67.mp3?filename=romantic-music-soft-piano-135989.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Typing animation
+    const lines = [
+      document.getElementById("line1"),
+      document.getElementById("line2"),
+      document.getElementById("line3"),
+      document.getElementById("line4"),
+      document.getElementById("line5"),
+    ];
+
+    let delay = 1000;
+    lines.forEach((line, i) => {
+      setTimeout(() => { line.style.opacity = 1; }, delay);
+      delay += 2000;
+    });
+
+    setTimeout(() => {
+      document.getElementById("tagline").style.opacity = 1;
+    }, delay + 500);
+
+    // Button action
+    document.getElementById("revealBtn").addEventListener("click", () => {
+      alert("🎉 Surprise! You’re loved more than words can ever say 💖\n\n— From your cutest trouble 😘");
+    });
+
+    // Floating hearts
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.textContent = "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = Math.random() * 3 + 3 + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+    setInterval(createHeart, 400);
+  </script>
+</body>
+</html>
