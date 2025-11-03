@@ -121,7 +121,8 @@
 
     let catModel = null, mixer = null, actions = {}, clock = new THREE.Clock();
 
-    loader.load(CAT_MODEL_URL, (gltf)=>{
+   loader.load('cute_spooky_cat.glb', function (gltf) {
+
       const model = gltf.scene || gltf.scenes[0];
       model.traverse(node => { if(node.isMesh){ node.castShadow=true; node.receiveShadow=true; }});
       // normalize, center, scale
@@ -349,5 +350,6 @@
   </script>
 </body>
 </html>
+
 
 
