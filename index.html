@@ -8,7 +8,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
-    <link rel="stylesheet" href="realism_enhancements.css">
+    <link rel="stylesheet" href="realism_enhancements.css">
+
+    <audio id="background-music" loop>
+        <source src="soft_piano_loop.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <style>
         /* ================================================= */
@@ -20,8 +25,8 @@
             font-family: 'Poppins', sans-serif;
             color: #E6E6E6; /* Light gray text on dark background */
             /* 🌟 Deep Black background 🌟 */
-            background-color: #0A0A0A; 
-            overflow: hidden; 
+            background-color: #0A0A0A; 
+            overflow: hidden; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -63,7 +68,7 @@
             transform: translate(-50%, -150%);
             background-color: #222222; /* Darker background for contrast */
             /* ACCENT COLOR: #FFD700 (Gold) */
-            border: 2px solid #FFD700; 
+            border: 2px solid #FFD700; 
             color: #FFD700; /* Gold text */
             padding: 10px 15px;
             border-radius: 20px;
@@ -96,7 +101,7 @@
             cursor: pointer;
             box-shadow: 0 8px 15px rgba(255, 215, 0, 0.4);
             transition: all 0.3s ease;
-            pointer-events: all; 
+            pointer-events: all; 
             opacity: 0;
             transform: translateY(20px);
         }
@@ -137,12 +142,12 @@
     // =================================================
 
     // --- CONFIGURATION ---
-    const CAT_MODEL_URL = 'cute_spooky_cat.glb'; 
-    const MEOW_SOUND_URL = 'meow.mp3'; 
-    
+    const CAT_MODEL_URL = 'cute_spooky_cat.glb'; 
+    const MEOW_SOUND_URL = 'meow.mp3'; 
+    
     // 🌟 UPDATED GIFT COLOR: Vibrant Red 🌟
-    const GIFT_COLOR = 0xC91D34; // Vibrant Red 
-    
+    const GIFT_COLOR = 0xC91D34; // Vibrant Red 
+    
     const STAR_COLOR = 0xffe08c; // Light Gold/Yellow for sparkles
 
     // Text sequence (UNCHANGED)
@@ -152,17 +157,17 @@
         'Okay okay, now it’s final — click here 😜',
         'I am the gift! What else do you want, another woman? 🕵️‍♀️😏',
         'Ahh, you couldn’t have another woman, so it’s me 😎💖',
-        'After all the fun... here’s your birthday wish 🎂' 
+        'After all the fun... here’s your birthday wish 🎂' 
     ];
-    
+    
     // --- THREE.JS SCENE SETUP ---
     let scene, camera, renderer, cat, gift, mixer, clock, catMixer, catAction;
-    let particles; 
-    let step = 0; 
+    let particles; 
+    let step = 0; 
     let bubble = document.getElementById('speech-bubble');
     let surpriseBtn = document.getElementById('surprise-btn');
     let meowSound;
-    
+    
     // Initial 3D positions (UNCHANGED)
     const INITIAL_CAT_POS = { x: -1.2, y: 0, z: 0 };
     const INITIAL_GIFT_POS = { x: 1.5, y: 0, z: 0 };
@@ -171,14 +176,14 @@
     // Initialize scene, camera, and renderer
     function init() {
         const container = document.getElementById('container');
-        
-        // Scene & Camera & Renderer 
+        
+        // Scene & Camera & Renderer 
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0a0a0a); 
-        
+        scene.background = new THREE.Color(0x0a0a0a); 
+        
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.set(0, 1.5, 3.5);
-        
+        
         // 🌟 IMPORTANT: Enable physically correct lighting for realism 🌟
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -187,7 +192,7 @@
         renderer.toneMapping = THREE.ACESFilmicToneMapping; // Add tone mapping for better contrast
         renderer.toneMappingExposure = 1.2; // Increase exposure slightly
         container.appendChild(renderer.domElement);
-        
+        
         // Audio setup (UNCHANGED)
         const listener = new THREE.AudioListener();
         camera.add(listener);
@@ -210,41 +215,41 @@
         directionalLight.shadow.camera.near = 0.5;
         directionalLight.shadow.camera.far = 50;
         scene.add(directionalLight);
-        
+        
         // Ground setup - Making the ground black
         const groundGeometry = new THREE.PlaneGeometry(10, 10);
-        const groundMaterial = new THREE.MeshPhongMaterial({ color: 0x0a0a0a, side: THREE.DoubleSide, shininess: 0 }); 
+        const groundMaterial = new THREE.MeshPhongMaterial({ color: 0x0a0a0a, side: THREE.DoubleSide, shininess: 0 }); 
         const ground = new THREE.Mesh(groundGeometry, groundMaterial);
         ground.rotation.x = Math.PI / 2;
         ground.position.y = 0;
         ground.receiveShadow = true;
         scene.add(ground);
-        
+        
         // --- Particle functions ---
         function createStarTexture() {
             const canvas = document.createElement('canvas');
             canvas.width = 32;
             canvas.height = 32;
             const context = canvas.getContext('2d');
-            
+            
             const gradient = context.createRadialGradient(
-                canvas.width / 2, canvas.height / 2, 0, 
+                canvas.width / 2, canvas.height / 2, 0, 
                 canvas.width / 2, canvas.height / 2, canvas.width / 2
             );
-            
-            gradient.addColorStop(0, 'rgba(255, 255, 255, 1)'); 
-            gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.5)'); 
-            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
-            
+            
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 1)'); 
+            gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.5)'); 
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            
             context.fillStyle = gradient;
             context.fillRect(0, 0, canvas.width, canvas.height);
-            
+            
             return new THREE.CanvasTexture(canvas);
         }
 
         function createParticles() {
             const geometry = new THREE.BufferGeometry();
-            const count = 500; 
+            const count = 500; 
 
             const positions = new Float32Array(count * 3);
             const colors = new Float32Array(count * 3);
@@ -255,35 +260,35 @@
             for (let i = 0; i < count; i++) {
                 positions[i * 3 + 0] = (Math.random() - 0.5) * 20;
                 positions[i * 3 + 1] = (Math.random() - 0.5) * 10 + 5;
-                positions[i * 3 + 2] = (Math.random() - 0.5) * 20 - 5; 
-                
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 20 - 5; 
+                
                 colors[i * 3 + 0] = color.r;
                 colors[i * 3 + 1] = color.g;
                 colors[i * 3 + 2] = color.b;
-                
-                sizes[i] = Math.random() * 0.2 + 0.1; 
+                
+                sizes[i] = Math.random() * 0.2 + 0.1; 
             }
 
             geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
             geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
             geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-            
-            const particleTexture = createStarTexture(); 
-            
+            
+            const particleTexture = createStarTexture(); 
+            
             const material = new THREE.PointsMaterial({
-                size: 0.2, 
+                size: 0.2, 
                 vertexColors: true,
-                blending: THREE.AdditiveBlending, 
+                blending: THREE.AdditiveBlending, 
                 transparent: true,
                 sizeAttenuation: true,
-                opacity: 1, 
-                map: particleTexture, 
+                opacity: 1, 
+                map: particleTexture, 
             });
-            
+            
             particles = new THREE.Points(geometry, material);
             scene.add(particles);
         }
-        
+        
         createParticles();
 
         // Load Gift Box (Material changed to MeshStandardMaterial for realism)
@@ -291,26 +296,26 @@
             const boxSize = 1;
             const giftBox = new THREE.Group();
             const boxGeometry = new THREE.BoxGeometry(boxSize, boxSize * 0.8, boxSize);
-            
+            
             // 🌟 THE REALISM FIX: Use MeshStandardMaterial 🌟
-            const boxMaterial = new THREE.MeshStandardMaterial({ 
-                color: GIFT_COLOR, 
+            const boxMaterial = new THREE.MeshStandardMaterial({ 
+                color: GIFT_COLOR, 
                 metalness: 0.9, // Almost pure metal
                 roughness: 0.3, // Semi-polished surface (0=mirror, 1=matte)
-            }); 
+            }); 
 
             const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
             boxMesh.position.y = boxSize * 0.4;
             boxMesh.castShadow = true;
             giftBox.add(boxMesh);
-            
+            
             // Ribbon and Bow meshes (Also updated to MeshStandardMaterial)
-            const ribbonMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0xcccccc, 
+            const ribbonMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xcccccc, 
                 metalness: 0.1, // Not metal
                 roughness: 0.8, // Matte, soft fabric look
-            }); 
-            
+            }); 
+            
             const ribbonThin = new THREE.BoxGeometry(boxSize + 0.02, 0.05, 0.1);
             const ribbonWide = new THREE.BoxGeometry(0.1, 0.05, boxSize + 0.02);
             const ribbonH = new THREE.Mesh(ribbonThin, ribbonMaterial);
@@ -327,7 +332,7 @@
             bowMesh.castShadow = true;
             giftBox.add(bowMesh);
 
-            giftBox.position.set(INITIAL_GIFT_POS.x, INITIAL_GIFT_POS.y, INITIAL_GIFT_POS.z); 
+            giftBox.position.set(INITIAL_GIFT_POS.x, INITIAL_GIFT_POS.y, INITIAL_GIFT_POS.z); 
             scene.add(giftBox);
             gift = giftBox;
         }
@@ -388,7 +393,7 @@
             catMixer.update(delta);
         }
 
-        // Gift Idle Animation 
+        // Gift Idle Animation 
         if (gift && !TWEEN.getAll().some(t => t.object === gift.position)) {
             const time = clock.getElapsedTime();
             gift.rotation.y = Math.sin(time * 0.5) * 0.1;
@@ -399,7 +404,7 @@
                 gift.position.z = basePosition.z;
             }
         }
-        
+        
         if (cat && !catMixer) {
             const time = clock.getElapsedTime();
             cat.rotation.y = Math.sin(time * 0.3) * 0.05 + Math.PI;
@@ -412,28 +417,28 @@
             const positions = particles.geometry.attributes.position.array;
             const time = clock.getElapsedTime();
             const speed = 0.01;
-            const amplitude = 0.015; 
-            
+            const amplitude = 0.015; 
+            
             // 1. Global Fading/Glow Effect: Animates the overall particle opacity
             // Maps sine wave from [-1, 1] to [0.3, 1] for a subtle, cyclical fade
-            const glowIntensity = (Math.sin(time * 0.5) * 0.35) + 0.65; 
+            const glowIntensity = (Math.sin(time * 0.5) * 0.35) + 0.65; 
             particles.material.opacity = glowIntensity;
 
             // 2. Individual Sparkle/Twinkle Effect and Movement
             for (let i = 0; i < positions.length; i += 3) {
                 // Vertical movement (upward drift)
-                positions[i + 1] += speed * delta * (Math.sin(time * 2 + i) * 0.5 + 0.5); 
-                
+                positions[i + 1] += speed * delta * (Math.sin(time * 2 + i) * 0.5 + 0.5); 
+                
                 // Horizontal movement: Slight random drift based on sine wave
                 positions[i + 0] += Math.sin(time * 1.5 + i) * 0.005 * delta; // X-axis drift
                 positions[i + 2] += Math.cos(time * 1.5 + i) * 0.005 * delta; // Z-axis drift
-                
+                
                 // Size update (individual sparkle/twinkle effect)
                 const sizeAttribute = particles.geometry.attributes.size;
                 // Use a faster sine wave (time * 12) for a more noticeable twinkle
                 const twinklePulse = (Math.sin(time * 12 + i / 3) * amplitude * 2) + 0.15;
                 sizeAttribute.array[i / 3] = twinklePulse * 2;
-                
+                
                 // Reset particle position if it moves too high (looping effect)
                 if (positions[i + 1] > 10) {
                     positions[i + 1] = -5;
@@ -471,15 +476,15 @@
                 .start();
         }
     }
-    
+    
     function moveOrShakeGift() {
         if (!gift) return;
 
-        if (step === 1) { 
+        if (step === 1) { 
             // First actual click (when showing the 2nd message) - MOVE the gift to the center
             new TWEEN.Tween(gift.position)
-                .to(CENTRAL_GIFT_POS, 800) 
-                .easing(TWEEN.Easing.Cubic.Out) 
+                .to(CENTRAL_GIFT_POS, 800) 
+                .easing(TWEEN.Easing.Cubic.Out) 
                 .start();
 
             // Rotate it as it moves
@@ -491,11 +496,11 @@
         } else if (step > 1) {
             // Subsequent clicks - do a subtle shake at the center position
             new TWEEN.Tween(gift.position)
-                .to({ x: CENTRAL_GIFT_POS.x + 0.1, y: 0.1, z: CENTRAL_GIFT_POS.z }, 100) 
+                .to({ x: CENTRAL_GIFT_POS.x + 0.1, y: 0.1, z: CENTRAL_GIFT_POS.z }, 100) 
                 .easing(TWEEN.Easing.Quadratic.Out)
                 .chain(
                     new TWEEN.Tween(gift.position)
-                        .to({ x: CENTRAL_GIFT_POS.x, y: 0, z: CENTRAL_GIFT_POS.z }, 100) 
+                        .to({ x: CENTRAL_GIFT_POS.x, y: 0, z: CENTRAL_GIFT_POS.z }, 100) 
                         .easing(TWEEN.Easing.Quadratic.In)
                 )
                 .start();
@@ -506,20 +511,20 @@
     function handleCatClick() {
         // Hide the current bubble immediately before showing the new one
         bubble.classList.remove('visible');
-        
+        
         // Check if all messages have already been displayed
         if (step >= textSequence.length) {
             // Keep showing the final message and animations
             updateBubbleText(textSequence[textSequence.length - 1]);
             playCatMeowAndJump();
-            moveOrShakeGift(); 
+            moveOrShakeGift(); 
             return;
         }
-        
+        
         // Core interaction logic
         playCatMeowAndJump();
-        moveOrShakeGift(); 
-        
+        moveOrShakeGift(); 
+        
         // Delay showing the next message slightly
         setTimeout(() => {
              updateBubbleText(textSequence[step]);
@@ -532,8 +537,18 @@
                  surpriseBtn.style.opacity = 1;
                  surpriseBtn.style.transform = 'translateY(0)';
              }
-        }, 300); 
+        }, 300); 
     }
+    
+    // 🎹 NEW: AUDIO START FUNCTION 🎹
+    function startMusic() {
+        const music = document.getElementById('background-music');
+        music.volume = 0.3; // Set volume low (0.3) for gentle background music
+        // Attempt to play, catching the error if the browser blocks autoplay
+        music.play().catch(e => {
+            console.log("Music play blocked, waiting for user interaction.");
+        });
+    }
 
     // TWEEN.js initialization (UNCHANGED)
     const tweenScript = document.createElement('script');
@@ -544,11 +559,17 @@
             TWEEN.update(time);
         }
         animateTWEEN();
-        init(); 
+        init(); 
         animate();
+        
+        // 🎹 CALL NEW FUNCTION TO START MUSIC 🎹
+        startMusic();
         
         // Set up click listener on the whole canvas area
         renderer.domElement.addEventListener('click', handleCatClick, false);
+        // Also ensure a second user click (anywhere) starts the music if the first one was blocked
+        renderer.domElement.addEventListener('click', startMusic, false);
+
         // Initial call to show the first message
         setTimeout(() => {
              bubble.classList.add('visible');
