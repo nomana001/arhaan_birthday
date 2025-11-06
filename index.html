@@ -6,14 +6,12 @@
     <title>For Arhaan - The Gift (Black & Gold Theme)</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+        <link rel="stylesheet" href="realism_enhancements.css">
 
-    <link rel="stylesheet" href="realism_enhancements.css">
-
-    <audio id="background-music" loop>
-        <source src="soft_piano_loop.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+    <audio id="background-music" loop>
+        <source src="soft_piano_loop.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <style>
         /* ================================================= */
@@ -142,36 +140,36 @@
     // =================================================
 
     // --- CONFIGURATION ---
-    const CAT_MODEL_URL = 'cute_spooky_cat.glb'; 
-    const MEOW_SOUND_URL = 'meow.mp3'; 
+    // REMOVED: const CAT_MODEL_URL = 'cute_spooky_cat.glb'; 
+    // REMOVED: const MEOW_SOUND_URL = 'meow.mp3'; 
     
     // 🌟 UPDATED GIFT COLOR: Vibrant Red 🌟
     const GIFT_COLOR = 0xC91D34; // Vibrant Red 
     
     const STAR_COLOR = 0xffe08c; // Light Gold/Yellow for sparkles
 
-    // Text sequence (UNCHANGED)
+    // Text sequence (UPDATED to remove cat references)
     const textSequence = [
         'Here’s something special for you — click here 🎁',
         'Oops, you missed it! Try again meri jaan 💋',
         'Okay okay, now it’s final — click here 😜',
-        'I am the gift! What else do you want, another woman? 🕵️‍♀️😏',
-        'Ahh, you couldn’t have another woman, so it’s me 😎💖',
+        'I am the gift! What else do you want? 😏',
+        'Ahh, you chose me, so it’s me 😎💖',
         'After all the fun... here’s your birthday wish 🎂' 
     ];
     
     // --- THREE.JS SCENE SETUP ---
-    let scene, camera, renderer, cat, gift, mixer, clock, catMixer, catAction;
+    // REMOVED: cat, catMixer, catAction
+    let scene, camera, renderer, gift, mixer, clock; 
     let particles; 
     let step = 0; 
     let bubble = document.getElementById('speech-bubble');
     let surpriseBtn = document.getElementById('surprise-btn');
-    let meowSound;
+    // REMOVED: let meowSound;
     
-    // Initial 3D positions (UNCHANGED)
-    const INITIAL_CAT_POS = { x: -1.2, y: 0, z: 0 };
-    const INITIAL_GIFT_POS = { x: 1.5, y: 0, z: 0 };
-    const CENTRAL_GIFT_POS = { x: 0, y: 0, z: 0.5 };
+    // Initial 3D positions (ADJUSTED: Removed cat's initial position)
+    const INITIAL_GIFT_POS = { x: 0, y: 0, z: 0 }; // Start gift in center
+    const CENTRAL_GIFT_POS = { x: 0, y: 0, z: 0 }; // Keep gift in center
 
     // Initialize scene, camera, and renderer
     function init() {
@@ -193,15 +191,9 @@
         renderer.toneMappingExposure = 1.2; // Increase exposure slightly
         container.appendChild(renderer.domElement);
         
-        // Audio setup (UNCHANGED)
-        const listener = new THREE.AudioListener();
-        camera.add(listener);
-        meowSound = new THREE.PositionalAudio(listener);
-        const audioLoader = new THREE.AudioLoader();
-        audioLoader.load(MEOW_SOUND_URL, function(buffer) {
-            meowSound.setBuffer(buffer);
-            meowSound.setRefDistance(1);
-        });
+        // REMOVED: Audio setup for meowSound
+        // const listener = new THREE.AudioListener();
+        // camera.add(listener);
 
         // Lighting setup - Adjusted for a darker scene
         // Ambient Light is crucial for PBR materials to work in shadows
@@ -225,7 +217,7 @@
         ground.receiveShadow = true;
         scene.add(ground);
         
-        // --- Particle functions ---
+        // --- Particle functions (UNCHANGED) ---
         function createStarTexture() {
             const canvas = document.createElement('canvas');
             canvas.width = 32;
@@ -291,7 +283,7 @@
         
         createParticles();
 
-        // Load Gift Box (Material changed to MeshStandardMaterial for realism)
+        // Load Gift Box (UNCHANGED)
         function loadGiftBox() {
             const boxSize = 1;
             const giftBox = new THREE.Group();
@@ -332,47 +324,20 @@
             bowMesh.castShadow = true;
             giftBox.add(bowMesh);
 
+            // Gift starts centered
             giftBox.position.set(INITIAL_GIFT_POS.x, INITIAL_GIFT_POS.y, INITIAL_GIFT_POS.z); 
             scene.add(giftBox);
             gift = giftBox;
+            
+            // Initial bubble message (moved here since the cat load callback is gone)
+            updateBubbleText(textSequence[step]);
+            step++;
         }
 
         loadGiftBox();
 
-        // Load Cat Model (UNCHANGED)
-        const loader = new THREE.GLTFLoader();
-        loader.load(CAT_MODEL_URL, function(gltf) {
-            cat = gltf.scene;
-            cat.position.set(INITIAL_CAT_POS.x, INITIAL_CAT_POS.y, INITIAL_CAT_POS.z);
-            cat.scale.set(0.8, 0.8, 0.8);
-            cat.traverse(function(node) {
-                if (node.isMesh) {
-                    node.castShadow = true;
-                    node.receiveShadow = true;
-                    // Also ensure the cat material is compatible with PBR lighting
-                    if (node.material && node.material.isMeshPhongMaterial) {
-                        node.material = new THREE.MeshStandardMaterial().copy(node.material);
-                    }
-                }
-            });
-            cat.add(meowSound);
-            scene.add(cat);
-            if (gltf.animations && gltf.animations.length > 0) {
-                catMixer = new THREE.AnimationMixer(cat);
-                catAction = catMixer.clipAction(gltf.animations[0]);
-                catAction.play();
-            }
-
-            // Initial bubble message
-            updateBubbleText(textSequence[step]);
-            step++;
-
-        }, undefined, function(error) {
-            console.error('An error happened loading the cat model:', error);
-            updateBubbleText(textSequence[step]);
-            step++;
-        });
-
+        // REMOVED: Cat Model loading logic (const loader = new THREE.GLTFLoader(); loader.load(...)
+        
         clock = new THREE.Clock();
         window.addEventListener('resize', onWindowResize, false);
     }
@@ -389,26 +354,21 @@
 
         const delta = clock.getDelta();
 
-        if (catMixer) {
-            catMixer.update(delta);
-        }
+        // REMOVED: CatMixer update
+        // if (catMixer) { catMixer.update(delta); }
 
         // Gift Idle Animation 
         if (gift && !TWEEN.getAll().some(t => t.object === gift.position)) {
             const time = clock.getElapsedTime();
             gift.rotation.y = Math.sin(time * 0.5) * 0.1;
-            const basePosition = (step > 1) ? CENTRAL_GIFT_POS : INITIAL_GIFT_POS;
+            const basePosition = CENTRAL_GIFT_POS; // Gift stays in center
             gift.position.y = basePosition.y + Math.sin(time * 2) * 0.05;
-            if (step > 1) {
-                gift.position.x = basePosition.x;
-                gift.position.z = basePosition.z;
-            }
+            gift.position.x = basePosition.x;
+            gift.position.z = basePosition.z;
         }
         
-        if (cat && !catMixer) {
-            const time = clock.getElapsedTime();
-            cat.rotation.y = Math.sin(time * 0.3) * 0.05 + Math.PI;
-        }
+        // REMOVED: Cat Idle animation
+        // if (cat && !catMixer) { ... }
 
         // =================================================================
         // 🌟 UPDATED Particle Animation: Fading, Glowing Sparkle Effect with Horizontal Movement 🌟
@@ -451,64 +411,42 @@
         renderer.render(scene, camera);
     }
 
-    // --- INTERACTION LOGIC (UNCHANGED) ---
+    // --- INTERACTION LOGIC (ADJUSTED) ---
 
     function updateBubbleText(text) {
         bubble.innerHTML = text;
         bubble.classList.add('visible');
     }
 
-    function playCatMeowAndJump() {
-        if (meowSound && meowSound.buffer && !meowSound.isPlaying) {
-            meowSound.play();
-        }
-
-        if (cat) {
-            // Cat Jump animation
-            new TWEEN.Tween(cat.position)
-                .to({ y: 0.3 }, 150)
-                .easing(TWEEN.Easing.Quadratic.Out)
-                .chain(
-                    new TWEEN.Tween(cat.position)
-                        .to({ y: 0 }, 150)
-                        .easing(TWEEN.Easing.Quadratic.In)
-                )
-                .start();
-        }
-    }
+    // REMOVED: function playCatMeowAndJump() { ... }
     
     function moveOrShakeGift() {
         if (!gift) return;
 
-        if (step === 1) { 
-            // First actual click (when showing the 2nd message) - MOVE the gift to the center
-            new TWEEN.Tween(gift.position)
-                .to(CENTRAL_GIFT_POS, 800) 
-                .easing(TWEEN.Easing.Cubic.Out) 
-                .start();
-
-            // Rotate it as it moves
-            new TWEEN.Tween(gift.rotation)
-                .to({ y: gift.rotation.y + Math.PI * 2 }, 800)
-                .easing(TWEEN.Easing.Cubic.Out)
-                .start();
-
-        } else if (step > 1) {
-            // Subsequent clicks - do a subtle shake at the center position
-            new TWEEN.Tween(gift.position)
-                .to({ x: CENTRAL_GIFT_POS.x + 0.1, y: 0.1, z: CENTRAL_GIFT_POS.z }, 100) 
-                .easing(TWEEN.Easing.Quadratic.Out)
-                .chain(
-                    new TWEEN.Tween(gift.position)
-                        .to({ x: CENTRAL_GIFT_POS.x, y: 0, z: CENTRAL_GIFT_POS.z }, 100) 
-                        .easing(TWEEN.Easing.Quadratic.In)
-                )
-                .start();
-        }
+        // Subsequent clicks - do a subtle shake at the center position
+        new TWEEN.Tween(gift.rotation)
+            .to({ y: gift.rotation.y + 0.5 }, 100) 
+            .easing(TWEEN.Easing.Quadratic.Out)
+            .chain(
+                new TWEEN.Tween(gift.rotation)
+                    .to({ y: gift.rotation.y }, 100) 
+                    .easing(TWEEN.Easing.Quadratic.In)
+            )
+            .start();
+        
+        new TWEEN.Tween(gift.position)
+            .to({ x: CENTRAL_GIFT_POS.x + 0.05, y: 0.1, z: CENTRAL_GIFT_POS.z }, 100) 
+            .easing(TWEEN.Easing.Quadratic.Out)
+            .chain(
+                new TWEEN.Tween(gift.position)
+                    .to({ x: CENTRAL_GIFT_POS.x, y: 0, z: CENTRAL_GIFT_POS.z }, 100) 
+                    .easing(TWEEN.Easing.Quadratic.In)
+            )
+            .start();
     }
 
 
-    function handleCatClick() {
+    function handleCatClick() { // Function name kept for simplicity but logic updated
         // Hide the current bubble immediately before showing the new one
         bubble.classList.remove('visible');
         
@@ -516,13 +454,11 @@
         if (step >= textSequence.length) {
             // Keep showing the final message and animations
             updateBubbleText(textSequence[textSequence.length - 1]);
-            playCatMeowAndJump();
             moveOrShakeGift(); 
             return;
         }
         
         // Core interaction logic
-        playCatMeowAndJump();
         moveOrShakeGift(); 
         
         // Delay showing the next message slightly
@@ -530,8 +466,7 @@
              updateBubbleText(textSequence[step]);
              step++; // Increment step AFTER displaying the message
              
-             // ** THE CRITICAL FIX IS HERE **
-             // Show the button when step equals the length of the array (meaning the last message has been shown and step was incremented).
+             // Show the button when step equals the length of the array
              if (step >= textSequence.length) {
                  surpriseBtn.classList.add('glowing-button');
                  surpriseBtn.style.opacity = 1;
@@ -539,18 +474,18 @@
              }
         }, 300); 
     }
-    
-    // 🎹 NEW: AUDIO START FUNCTION 🎹
-    function startMusic() {
-        const music = document.getElementById('background-music');
-        music.volume = 0.3; // Set volume low (0.3) for gentle background music
-        // Attempt to play, catching the error if the browser blocks autoplay
-        music.play().catch(e => {
-            console.log("Music play blocked, waiting for user interaction.");
-        });
-    }
+    
+    // 🎹 NEW: AUDIO START FUNCTION 🎹
+    function startMusic() {
+        const music = document.getElementById('background-music');
+        music.volume = 0.3; // Set volume low (0.3) for gentle background music
+        // Attempt to play, catching the error if the browser blocks autoplay
+        music.play().catch(e => {
+            console.log("Music play blocked, waiting for user interaction.");
+        });
+    }
 
-    // TWEEN.js initialization (UNCHANGED)
+    // TWEEN.js initialization (ADJUSTED for new load sequence)
     const tweenScript = document.createElement('script');
     tweenScript.src = "https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.6.4/dist/tween.umd.js";
     tweenScript.onload = () => {
@@ -561,14 +496,14 @@
         animateTWEEN();
         init(); 
         animate();
-        
-        // 🎹 CALL NEW FUNCTION TO START MUSIC 🎹
-        startMusic();
-        
-        // Set up click listener on the whole canvas area
+        
+        // 🎹 CALL NEW FUNCTION TO START MUSIC 🎹
+        startMusic();
+        
+        // Set up click listener on the whole canvas area (click now interacts with the gift)
         renderer.domElement.addEventListener('click', handleCatClick, false);
-        // Also ensure a second user click (anywhere) starts the music if the first one was blocked
-        renderer.domElement.addEventListener('click', startMusic, false);
+        // Also ensure a second user click (anywhere) starts the music if the first one was blocked
+        renderer.domElement.addEventListener('click', startMusic, false);
 
         // Initial call to show the first message
         setTimeout(() => {
