@@ -1,561 +1,561 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Arhaan - The Gift (Black & Gold Theme)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-    <style>
-        /* ================================================= */
-        /* 🌟 CSS THEME UPDATE: BLACK & GOLD ACCENTS 🌟 */
-        /* ================================================= */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            color: #E6E6E6; /* Light gray text on dark background */
-            /* 🌟 Deep Black background 🌟 */
-            background-color: #FFB6C1; 
-            overflow: hidden; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Arhaan - The Gift (Black & Gold Theme)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
-        /* 3D CANVAS STYLES */
-        canvas {
-            display: block;
-            width: 100% !important;
-            height: 100% !important;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
+    <link rel="stylesheet" href="realism_enhancements.css">
 
-        /* UI CONTAINER */
-        #ui-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            pointer-events: none;
-            padding-bottom: 50px;
-        }
+    <style>
+        /* ================================================= */
+        /* 🌟 CSS THEME UPDATE: BLACK & GOLD ACCENTS 🌟 */
+        /* ================================================= */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            color: #E6E6E6; /* Light gray text on dark background */
+            /* 🌟 Deep Black background 🌟 */
+            background-color: #0A0A0A; 
+            overflow: hidden; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-        /* SPEECH BUBBLE STYLES - UPDATED FOR DARK THEME */
-        #speech-bubble {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -150%);
-            background-color: #222222; /* Darker background for contrast */
-            /* ACCENT COLOR: #FFD700 (Gold) */
-            border: 2px solid #FFD700; 
-            color: #FFD700; /* Gold text */
-            padding: 10px 15px;
-            border-radius: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-            font-weight: 700;
-            font-size: clamp(14px, 4vw, 20px);
-            opacity: 0;
-            transition: opacity 0.5s, transform 0.2s;
-            max-width: 80%;
-            text-align: center;
-            pointer-events: none;
-            z-index: 20;
-        }
+        /* 3D CANVAS STYLES */
+        canvas {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
 
-        #speech-bubble.visible {
-            opacity: 1;
-            transform: translate(-50%, -150%) scale(1);
-        }
+        /* UI CONTAINER */
+        #ui-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            pointer-events: none;
+            padding-bottom: 50px;
+        }
 
-        /* BUTTON STYLES - UPDATED FOR GOLD ACCENT */
-        .surprise-button {
-            /* ACCENT COLOR: #FFD700 (Gold) */
-            background-color: #FFD700;
-            color: #0A0A0A; /* Dark text on gold button */
-            padding: 15px 30px;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 8px 15px rgba(255, 215, 0, 0.4);
-            transition: all 0.3s ease;
-            pointer-events: all; 
-            opacity: 0;
-            transform: translateY(20px);
-        }
+        /* SPEECH BUBBLE STYLES - UPDATED FOR DARK THEME */
+        #speech-bubble {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -150%);
+            background-color: #222222; /* Darker background for contrast */
+            /* ACCENT COLOR: #FFD700 (Gold) */
+            border: 2px solid #FFD700; 
+            color: #FFD700; /* Gold text */
+            padding: 10px 15px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            font-weight: 700;
+            font-size: clamp(14px, 4vw, 20px);
+            opacity: 0;
+            transition: opacity 0.5s, transform 0.2s;
+            max-width: 80%;
+            text-align: center;
+            pointer-events: none;
+            z-index: 20;
+        }
 
-        .surprise-button:hover {
-            background-color: #F8C300; /* Slightly darker gold on hover */
-            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.6);
-            transform: translateY(-2px);
-        }
+        #speech-bubble.visible {
+            opacity: 1;
+            transform: translate(-50%, -150%) scale(1);
+        }
 
-        /* GLOW EFFECT ANIMATION - UPDATED FOR GOLD GLOW */
-        .glowing-button {
-            animation: glow 1.5s infinite alternate;
-        }
+        /* BUTTON STYLES - UPDATED FOR GOLD ACCENT */
+        .surprise-button {
+            /* ACCENT COLOR: #FFD700 (Gold) */
+            background-color: #FFD700;
+            color: #0A0A0A; /* Dark text on gold button */
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 15px rgba(255, 215, 0, 0.4);
+            transition: all 0.3s ease;
+            pointer-events: all; 
+            opacity: 0;
+            transform: translateY(20px);
+        }
 
-        @keyframes glow {
-            from {
-                box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #FFD700, 0 0 20px #FFD700;
-            }
-            to {
-                box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #FFD700, 0 0 40px #FFD700;
-            }
-        }
-    </style>
+        .surprise-button:hover {
+            background-color: #F8C300; /* Slightly darker gold on hover */
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* GLOW EFFECT ANIMATION - UPDATED FOR GOLD GLOW */
+        .glowing-button {
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #FFD700, 0 0 20px #FFD700;
+            }
+            to {
+                box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #FFD700, 0 0 40px #FFD700;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div id="container"></div>
-    <div id="ui-overlay">
-        <div id="speech-bubble"></div>
-        <button id="surprise-btn" class="surprise-button" onclick="window.location.href='birthday.html'">
-            👉 Go to your surprise ✨
-        </button>
-    </div>
+    <div id="container"></div>
+    <div id="ui-overlay">
+        <div id="speech-bubble"></div>
+        <button id="surprise-btn" class="surprise-button" onclick="window.location.href='birthday.html'">
+            👉 Go to your surprise ✨
+        </button>
+    </div>
 
-    <script>
-    // =================================================
-    // 🌟 JAVASCRIPT / THREE.JS UPDATES 🌟
-    // =================================================
+    <script>
+    // =================================================
+    // 🌟 JAVASCRIPT / THREE.JS UPDATES 🌟
+    // =================================================
 
-    // --- CONFIGURATION ---
-    const CAT_MODEL_URL = 'https://github.com/nomana001/arhaan_birthday/blob/main/cute_spooky_cat.glb'; 
-    const MEOW_SOUND_URL = 'https://github.com/nomana001/arhaan_birthday/blob/main/mixkit-sweet-kitty-meow-93.wav'; 
-    
-    // 🌟 UPDATED GIFT COLOR: Vibrant Red 🌟
-    const GIFT_COLOR = 0xC91D34; // Vibrant Red 
-    
-    const STAR_COLOR = 0xffe08c; // Light Gold/Yellow for sparkles
+    // --- CONFIGURATION ---
+    const CAT_MODEL_URL = 'cute_spooky_cat.glb'; 
+    const MEOW_SOUND_URL = 'meow.mp3'; 
+    
+    // 🌟 UPDATED GIFT COLOR: Vibrant Red 🌟
+    const GIFT_COLOR = 0xC91D34; // Vibrant Red 
+    
+    const STAR_COLOR = 0xffe08c; // Light Gold/Yellow for sparkles
 
-    // Text sequence (UNCHANGED)
-    const textSequence = [
-        'Here’s something special for you — click here 🎁',
-        'Oops, you missed it! Try again meri jaan 💋',
-        'Okay okay, now it’s final — click here 😜',
-        'I am the gift! What else do you want, another woman? 🕵️‍♀️😏',
-        'Ahh, you couldn’t have another woman, so it’s me 😎💖',
-        'After all the fun... here’s your birthday wish 🎂' 
-    ];
-    
-    // --- THREE.JS SCENE SETUP ---
-    let scene, camera, renderer, cat, gift, mixer, clock, catMixer, catAction;
-    let particles; 
-    let step = 0; 
-    let bubble = document.getElementById('speech-bubble');
-    let surpriseBtn = document.getElementById('surprise-btn');
-    let meowSound;
-    
-    // Initial 3D positions (UNCHANGED)
-    const INITIAL_CAT_POS = { x: -1.2, y: 0, z: 0 };
-    const INITIAL_GIFT_POS = { x: 1.5, y: 0, z: 0 };
-    const CENTRAL_GIFT_POS = { x: 0, y: 0, z: 0.5 };
+    // Text sequence (UNCHANGED)
+    const textSequence = [
+        'Here’s something special for you — click here 🎁',
+        'Oops, you missed it! Try again meri jaan 💋',
+        'Okay okay, now it’s final — click here 😜',
+        'I am the gift! What else do you want, another woman? 🕵️‍♀️😏',
+        'Ahh, you couldn’t have another woman, so it’s me 😎💖',
+        'After all the fun... here’s your birthday wish 🎂' 
+    ];
+    
+    // --- THREE.JS SCENE SETUP ---
+    let scene, camera, renderer, cat, gift, mixer, clock, catMixer, catAction;
+    let particles; 
+    let step = 0; 
+    let bubble = document.getElementById('speech-bubble');
+    let surpriseBtn = document.getElementById('surprise-btn');
+    let meowSound;
+    
+    // Initial 3D positions (UNCHANGED)
+    const INITIAL_CAT_POS = { x: -1.2, y: 0, z: 0 };
+    const INITIAL_GIFT_POS = { x: 1.5, y: 0, z: 0 };
+    const CENTRAL_GIFT_POS = { x: 0, y: 0, z: 0.5 };
 
-    // Initialize scene, camera, and renderer
-    function init() {
-        const container = document.getElementById('container');
-        
-        // Scene & Camera & Renderer 
-        scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0a0a0a); 
-        
-        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 1.5, 3.5);
-        
-        // 🌟 IMPORTANT: Enable physically correct lighting for realism 🌟
-        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.shadowMap.enabled = true;
-        renderer.toneMapping = THREE.ACESFilmicToneMapping; // Add tone mapping for better contrast
-        renderer.toneMappingExposure = 1.2; // Increase exposure slightly
-        container.appendChild(renderer.domElement);
-        
-        // Audio setup (UNCHANGED)
-        const listener = new THREE.AudioListener();
-        camera.add(listener);
-        meowSound = new THREE.PositionalAudio(listener);
-        const audioLoader = new THREE.AudioLoader();
-        audioLoader.load(MEOW_SOUND_URL, function(buffer) {
-            meowSound.setBuffer(buffer);
-            meowSound.setRefDistance(1);
-        });
+    // Initialize scene, camera, and renderer
+    function init() {
+        const container = document.getElementById('container');
+        
+        // Scene & Camera & Renderer 
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a0a0a); 
+        
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 1.5, 3.5);
+        
+        // 🌟 IMPORTANT: Enable physically correct lighting for realism 🌟
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.shadowMap.enabled = true;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping; // Add tone mapping for better contrast
+        renderer.toneMappingExposure = 1.2; // Increase exposure slightly
+        container.appendChild(renderer.domElement);
+        
+        // Audio setup (UNCHANGED)
+        const listener = new THREE.AudioListener();
+        camera.add(listener);
+        meowSound = new THREE.PositionalAudio(listener);
+        const audioLoader = new THREE.AudioLoader();
+        audioLoader.load(MEOW_SOUND_URL, function(buffer) {
+            meowSound.setBuffer(buffer);
+            meowSound.setRefDistance(1);
+        });
 
-        // Lighting setup - Adjusted for a darker scene
-        // Ambient Light is crucial for PBR materials to work in shadows
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8); // Increased ambient light for PBR
-        scene.add(ambientLight);
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 3); // Brighter directional light
-        directionalLight.position.set(5, 5, 5);
-        directionalLight.castShadow = true;
-        directionalLight.shadow.mapSize.width = 1024;
-        directionalLight.shadow.mapSize.height = 1024;
-        directionalLight.shadow.camera.near = 0.5;
-        directionalLight.shadow.camera.far = 50;
-        scene.add(directionalLight);
-        
-        // Ground setup - Making the ground black
-        const groundGeometry = new THREE.PlaneGeometry(10, 10);
-        const groundMaterial = new THREE.MeshPhongMaterial({ color: 0x0a0a0a, side: THREE.DoubleSide, shininess: 0 }); 
-        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-        ground.rotation.x = Math.PI / 2;
-        ground.position.y = 0;
-        ground.receiveShadow = true;
-        scene.add(ground);
-        
-        // --- Particle functions ---
-        function createStarTexture() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 32;
-            canvas.height = 32;
-            const context = canvas.getContext('2d');
-            
-            const gradient = context.createRadialGradient(
-                canvas.width / 2, canvas.height / 2, 0, 
-                canvas.width / 2, canvas.height / 2, canvas.width / 2
-            );
-            
-            gradient.addColorStop(0, 'rgba(255, 255, 255, 1)'); 
-            gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.5)'); 
-            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
-            
-            context.fillStyle = gradient;
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            
-            return new THREE.CanvasTexture(canvas);
-        }
+        // Lighting setup - Adjusted for a darker scene
+        // Ambient Light is crucial for PBR materials to work in shadows
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8); // Increased ambient light for PBR
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 3); // Brighter directional light
+        directionalLight.position.set(5, 5, 5);
+        directionalLight.castShadow = true;
+        directionalLight.shadow.mapSize.width = 1024;
+        directionalLight.shadow.mapSize.height = 1024;
+        directionalLight.shadow.camera.near = 0.5;
+        directionalLight.shadow.camera.far = 50;
+        scene.add(directionalLight);
+        
+        // Ground setup - Making the ground black
+        const groundGeometry = new THREE.PlaneGeometry(10, 10);
+        const groundMaterial = new THREE.MeshPhongMaterial({ color: 0x0a0a0a, side: THREE.DoubleSide, shininess: 0 }); 
+        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+        ground.rotation.x = Math.PI / 2;
+        ground.position.y = 0;
+        ground.receiveShadow = true;
+        scene.add(ground);
+        
+        // --- Particle functions ---
+        function createStarTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 32;
+            canvas.height = 32;
+            const context = canvas.getContext('2d');
+            
+            const gradient = context.createRadialGradient(
+                canvas.width / 2, canvas.height / 2, 0, 
+                canvas.width / 2, canvas.height / 2, canvas.width / 2
+            );
+            
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 1)'); 
+            gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.5)'); 
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)'); 
+            
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            
+            return new THREE.CanvasTexture(canvas);
+        }
 
-        function createParticles() {
-            const geometry = new THREE.BufferGeometry();
-            const count = 500; 
+        function createParticles() {
+            const geometry = new THREE.BufferGeometry();
+            const count = 500; 
 
-            const positions = new Float32Array(count * 3);
-            const colors = new Float32Array(count * 3);
-            const sizes = new Float32Array(count);
+            const positions = new Float32Array(count * 3);
+            const colors = new Float32Array(count * 3);
+            const sizes = new Float32Array(count);
 
-            const color = new THREE.Color(STAR_COLOR);
+            const color = new THREE.Color(STAR_COLOR);
 
-            for (let i = 0; i < count; i++) {
-                positions[i * 3 + 0] = (Math.random() - 0.5) * 20;
-                positions[i * 3 + 1] = (Math.random() - 0.5) * 10 + 5;
-                positions[i * 3 + 2] = (Math.random() - 0.5) * 20 - 5; 
-                
-                colors[i * 3 + 0] = color.r;
-                colors[i * 3 + 1] = color.g;
-                colors[i * 3 + 2] = color.b;
-                
-                sizes[i] = Math.random() * 0.2 + 0.1; 
-            }
+            for (let i = 0; i < count; i++) {
+                positions[i * 3 + 0] = (Math.random() - 0.5) * 20;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 10 + 5;
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 20 - 5; 
+                
+                colors[i * 3 + 0] = color.r;
+                colors[i * 3 + 1] = color.g;
+                colors[i * 3 + 2] = color.b;
+                
+                sizes[i] = Math.random() * 0.2 + 0.1; 
+            }
 
-            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-            geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-            
-            const particleTexture = createStarTexture(); 
-            
-            const material = new THREE.PointsMaterial({
-                size: 0.2, 
-                vertexColors: true,
-                blending: THREE.AdditiveBlending, 
-                transparent: true,
-                sizeAttenuation: true,
-                opacity: 1, 
-                map: particleTexture, 
-            });
-            
-            particles = new THREE.Points(geometry, material);
-            scene.add(particles);
-        }
-        
-        createParticles();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+            
+            const particleTexture = createStarTexture(); 
+            
+            const material = new THREE.PointsMaterial({
+                size: 0.2, 
+                vertexColors: true,
+                blending: THREE.AdditiveBlending, 
+                transparent: true,
+                sizeAttenuation: true,
+                opacity: 1, 
+                map: particleTexture, 
+            });
+            
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+        }
+        
+        createParticles();
 
-        // Load Gift Box (Material changed to MeshStandardMaterial for realism)
-        function loadGiftBox() {
-            const boxSize = 1;
-            const giftBox = new THREE.Group();
-            const boxGeometry = new THREE.BoxGeometry(boxSize, boxSize * 0.8, boxSize);
-            
-            // 🌟 THE REALISM FIX: Use MeshStandardMaterial 🌟
-            const boxMaterial = new THREE.MeshStandardMaterial({ 
-                color: GIFT_COLOR, 
-                metalness: 0.9, // Almost pure metal
-                roughness: 0.3, // Semi-polished surface (0=mirror, 1=matte)
-            }); 
+        // Load Gift Box (Material changed to MeshStandardMaterial for realism)
+        function loadGiftBox() {
+            const boxSize = 1;
+            const giftBox = new THREE.Group();
+            const boxGeometry = new THREE.BoxGeometry(boxSize, boxSize * 0.8, boxSize);
+            
+            // 🌟 THE REALISM FIX: Use MeshStandardMaterial 🌟
+            const boxMaterial = new THREE.MeshStandardMaterial({ 
+                color: GIFT_COLOR, 
+                metalness: 0.9, // Almost pure metal
+                roughness: 0.3, // Semi-polished surface (0=mirror, 1=matte)
+            }); 
 
-            const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-            boxMesh.position.y = boxSize * 0.4;
-            boxMesh.castShadow = true;
-            giftBox.add(boxMesh);
-            
-            // Ribbon and Bow meshes (Also updated to MeshStandardMaterial)
-            const ribbonMaterial = new THREE.MeshStandardMaterial({ 
-                color: 0xcccccc, 
-                metalness: 0.1, // Not metal
-                roughness: 0.8, // Matte, soft fabric look
-            }); 
-            
-            const ribbonThin = new THREE.BoxGeometry(boxSize + 0.02, 0.05, 0.1);
-            const ribbonWide = new THREE.BoxGeometry(0.1, 0.05, boxSize + 0.02);
-            const ribbonH = new THREE.Mesh(ribbonThin, ribbonMaterial);
-            ribbonH.position.y = boxSize * 0.8 + 0.025;
-            ribbonH.castShadow = true;
-            giftBox.add(ribbonH);
-            const ribbonV = new THREE.Mesh(ribbonWide, ribbonMaterial);
-            ribbonV.position.y = boxSize * 0.8 + 0.025;
-            ribbonV.castShadow = true;
-            giftBox.add(ribbonV);
-            const bowGeometry = new THREE.SphereGeometry(0.15, 16, 16);
-            const bowMesh = new THREE.Mesh(bowGeometry, ribbonMaterial);
-            bowMesh.position.y = boxSize * 0.8 + 0.15;
-            bowMesh.castShadow = true;
-            giftBox.add(bowMesh);
+            const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+            boxMesh.position.y = boxSize * 0.4;
+            boxMesh.castShadow = true;
+            giftBox.add(boxMesh);
+            
+            // Ribbon and Bow meshes (Also updated to MeshStandardMaterial)
+            const ribbonMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xcccccc, 
+                metalness: 0.1, // Not metal
+                roughness: 0.8, // Matte, soft fabric look
+            }); 
+            
+            const ribbonThin = new THREE.BoxGeometry(boxSize + 0.02, 0.05, 0.1);
+            const ribbonWide = new THREE.BoxGeometry(0.1, 0.05, boxSize + 0.02);
+            const ribbonH = new THREE.Mesh(ribbonThin, ribbonMaterial);
+            ribbonH.position.y = boxSize * 0.8 + 0.025;
+            ribbonH.castShadow = true;
+            giftBox.add(ribbonH);
+            const ribbonV = new THREE.Mesh(ribbonWide, ribbonMaterial);
+            ribbonV.position.y = boxSize * 0.8 + 0.025;
+            ribbonV.castShadow = true;
+            giftBox.add(ribbonV);
+            const bowGeometry = new THREE.SphereGeometry(0.15, 16, 16);
+            const bowMesh = new THREE.Mesh(bowGeometry, ribbonMaterial);
+            bowMesh.position.y = boxSize * 0.8 + 0.15;
+            bowMesh.castShadow = true;
+            giftBox.add(bowMesh);
 
-            giftBox.position.set(INITIAL_GIFT_POS.x, INITIAL_GIFT_POS.y, INITIAL_GIFT_POS.z); 
-            scene.add(giftBox);
-            gift = giftBox;
-        }
+            giftBox.position.set(INITIAL_GIFT_POS.x, INITIAL_GIFT_POS.y, INITIAL_GIFT_POS.z); 
+            scene.add(giftBox);
+            gift = giftBox;
+        }
 
-        loadGiftBox();
+        loadGiftBox();
 
-        // Load Cat Model (UNCHANGED)
-        const loader = new THREE.GLTFLoader();
-        loader.load(CAT_MODEL_URL, function(gltf) {
-            cat = gltf.scene;
-            cat.position.set(INITIAL_CAT_POS.x, INITIAL_CAT_POS.y, INITIAL_CAT_POS.z);
-            cat.scale.set(0.8, 0.8, 0.8);
-            cat.traverse(function(node) {
-                if (node.isMesh) {
-                    node.castShadow = true;
-                    node.receiveShadow = true;
-                    // Also ensure the cat material is compatible with PBR lighting
-                    if (node.material && node.material.isMeshPhongMaterial) {
-                        node.material = new THREE.MeshStandardMaterial().copy(node.material);
-                    }
-                }
-            });
-            cat.add(meowSound);
-            scene.add(cat);
-            if (gltf.animations && gltf.animations.length > 0) {
-                catMixer = new THREE.AnimationMixer(cat);
-                catAction = catMixer.clipAction(gltf.animations[0]);
-                catAction.play();
-            }
+        // Load Cat Model (UNCHANGED)
+        const loader = new THREE.GLTFLoader();
+        loader.load(CAT_MODEL_URL, function(gltf) {
+            cat = gltf.scene;
+            cat.position.set(INITIAL_CAT_POS.x, INITIAL_CAT_POS.y, INITIAL_CAT_POS.z);
+            cat.scale.set(0.8, 0.8, 0.8);
+            cat.traverse(function(node) {
+                if (node.isMesh) {
+                    node.castShadow = true;
+                    node.receiveShadow = true;
+                    // Also ensure the cat material is compatible with PBR lighting
+                    if (node.material && node.material.isMeshPhongMaterial) {
+                        node.material = new THREE.MeshStandardMaterial().copy(node.material);
+                    }
+                }
+            });
+            cat.add(meowSound);
+            scene.add(cat);
+            if (gltf.animations && gltf.animations.length > 0) {
+                catMixer = new THREE.AnimationMixer(cat);
+                catAction = catMixer.clipAction(gltf.animations[0]);
+                catAction.play();
+            }
 
-            // Initial bubble message
-            updateBubbleText(textSequence[step]);
-            step++;
+            // Initial bubble message
+            updateBubbleText(textSequence[step]);
+            step++;
 
-        }, undefined, function(error) {
-            console.error('An error happened loading the cat model:', error);
-            updateBubbleText(textSequence[step]);
-            step++;
-        });
+        }, undefined, function(error) {
+            console.error('An error happened loading the cat model:', error);
+            updateBubbleText(textSequence[step]);
+            step++;
+        });
 
-        clock = new THREE.Clock();
-        window.addEventListener('resize', onWindowResize, false);
-    }
+        clock = new THREE.Clock();
+        window.addEventListener('resize', onWindowResize, false);
+    }
 
-    function onWindowResize() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    }
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
 
-    // Animation Loop
-    function animate() {
-        requestAnimationFrame(animate);
+    // Animation Loop
+    function animate() {
+        requestAnimationFrame(animate);
 
-        const delta = clock.getDelta();
+        const delta = clock.getDelta();
 
-        if (catMixer) {
-            catMixer.update(delta);
-        }
+        if (catMixer) {
+            catMixer.update(delta);
+        }
 
-        // Gift Idle Animation 
-        if (gift && !TWEEN.getAll().some(t => t.object === gift.position)) {
-            const time = clock.getElapsedTime();
-            gift.rotation.y = Math.sin(time * 0.5) * 0.1;
-            const basePosition = (step > 1) ? CENTRAL_GIFT_POS : INITIAL_GIFT_POS;
-            gift.position.y = basePosition.y + Math.sin(time * 2) * 0.05;
-            if (step > 1) {
-                gift.position.x = basePosition.x;
-                gift.position.z = basePosition.z;
-            }
-        }
-        
-        if (cat && !catMixer) {
-            const time = clock.getElapsedTime();
-            cat.rotation.y = Math.sin(time * 0.3) * 0.05 + Math.PI;
-        }
+        // Gift Idle Animation 
+        if (gift && !TWEEN.getAll().some(t => t.object === gift.position)) {
+            const time = clock.getElapsedTime();
+            gift.rotation.y = Math.sin(time * 0.5) * 0.1;
+            const basePosition = (step > 1) ? CENTRAL_GIFT_POS : INITIAL_GIFT_POS;
+            gift.position.y = basePosition.y + Math.sin(time * 2) * 0.05;
+            if (step > 1) {
+                gift.position.x = basePosition.x;
+                gift.position.z = basePosition.z;
+            }
+        }
+        
+        if (cat && !catMixer) {
+            const time = clock.getElapsedTime();
+            cat.rotation.y = Math.sin(time * 0.3) * 0.05 + Math.PI;
+        }
 
-        // =================================================================
-        // 🌟 UPDATED Particle Animation: Fading, Glowing Sparkle Effect with Horizontal Movement 🌟
-        // =================================================================
-        if (particles) {
-            const positions = particles.geometry.attributes.position.array;
-            const time = clock.getElapsedTime();
-            const speed = 0.01;
-            const amplitude = 0.015; 
-            
-            // 1. Global Fading/Glow Effect: Animates the overall particle opacity
-            // Maps sine wave from [-1, 1] to [0.3, 1] for a subtle, cyclical fade
-            const glowIntensity = (Math.sin(time * 0.5) * 0.35) + 0.65; 
-            particles.material.opacity = glowIntensity;
+        // =================================================================
+        // 🌟 UPDATED Particle Animation: Fading, Glowing Sparkle Effect with Horizontal Movement 🌟
+        // =================================================================
+        if (particles) {
+            const positions = particles.geometry.attributes.position.array;
+            const time = clock.getElapsedTime();
+            const speed = 0.01;
+            const amplitude = 0.015; 
+            
+            // 1. Global Fading/Glow Effect: Animates the overall particle opacity
+            // Maps sine wave from [-1, 1] to [0.3, 1] for a subtle, cyclical fade
+            const glowIntensity = (Math.sin(time * 0.5) * 0.35) + 0.65; 
+            particles.material.opacity = glowIntensity;
 
-            // 2. Individual Sparkle/Twinkle Effect and Movement
-            for (let i = 0; i < positions.length; i += 3) {
-                // Vertical movement (upward drift)
-                positions[i + 1] += speed * delta * (Math.sin(time * 2 + i) * 0.5 + 0.5); 
-                
-                // Horizontal movement: Slight random drift based on sine wave
-                positions[i + 0] += Math.sin(time * 1.5 + i) * 0.005 * delta; // X-axis drift
-                positions[i + 2] += Math.cos(time * 1.5 + i) * 0.005 * delta; // Z-axis drift
-                
-                // Size update (individual sparkle/twinkle effect)
-                const sizeAttribute = particles.geometry.attributes.size;
-                // Use a faster sine wave (time * 12) for a more noticeable twinkle
-                const twinklePulse = (Math.sin(time * 12 + i / 3) * amplitude * 2) + 0.15;
-                sizeAttribute.array[i / 3] = twinklePulse * 2;
-                
-                // Reset particle position if it moves too high (looping effect)
-                if (positions[i + 1] > 10) {
-                    positions[i + 1] = -5;
-                }
-            }
-            particles.geometry.attributes.position.needsUpdate = true;
-            particles.geometry.attributes.size.needsUpdate = true;
-        }
+            // 2. Individual Sparkle/Twinkle Effect and Movement
+            for (let i = 0; i < positions.length; i += 3) {
+                // Vertical movement (upward drift)
+                positions[i + 1] += speed * delta * (Math.sin(time * 2 + i) * 0.5 + 0.5); 
+                
+                // Horizontal movement: Slight random drift based on sine wave
+                positions[i + 0] += Math.sin(time * 1.5 + i) * 0.005 * delta; // X-axis drift
+                positions[i + 2] += Math.cos(time * 1.5 + i) * 0.005 * delta; // Z-axis drift
+                
+                // Size update (individual sparkle/twinkle effect)
+                const sizeAttribute = particles.geometry.attributes.size;
+                // Use a faster sine wave (time * 12) for a more noticeable twinkle
+                const twinklePulse = (Math.sin(time * 12 + i / 3) * amplitude * 2) + 0.15;
+                sizeAttribute.array[i / 3] = twinklePulse * 2;
+                
+                // Reset particle position if it moves too high (looping effect)
+                if (positions[i + 1] > 10) {
+                    positions[i + 1] = -5;
+                }
+            }
+            particles.geometry.attributes.position.needsUpdate = true;
+            particles.geometry.attributes.size.needsUpdate = true;
+        }
 
-        renderer.render(scene, camera);
-    }
+        renderer.render(scene, camera);
+    }
 
-    // --- INTERACTION LOGIC (UNCHANGED) ---
+    // --- INTERACTION LOGIC (UNCHANGED) ---
 
-    function updateBubbleText(text) {
-        bubble.innerHTML = text;
-        bubble.classList.add('visible');
-    }
+    function updateBubbleText(text) {
+        bubble.innerHTML = text;
+        bubble.classList.add('visible');
+    }
 
-    function playCatMeowAndJump() {
-        if (meowSound && meowSound.buffer && !meowSound.isPlaying) {
-            meowSound.play();
-        }
+    function playCatMeowAndJump() {
+        if (meowSound && meowSound.buffer && !meowSound.isPlaying) {
+            meowSound.play();
+        }
 
-        if (cat) {
-            // Cat Jump animation
-            new TWEEN.Tween(cat.position)
-                .to({ y: 0.3 }, 150)
-                .easing(TWEEN.Easing.Quadratic.Out)
-                .chain(
-                    new TWEEN.Tween(cat.position)
-                        .to({ y: 0 }, 150)
-                        .easing(TWEEN.Easing.Quadratic.In)
-                )
-                .start();
-        }
-    }
-    
-    function moveOrShakeGift() {
-        if (!gift) return;
+        if (cat) {
+            // Cat Jump animation
+            new TWEEN.Tween(cat.position)
+                .to({ y: 0.3 }, 150)
+                .easing(TWEEN.Easing.Quadratic.Out)
+                .chain(
+                    new TWEEN.Tween(cat.position)
+                        .to({ y: 0 }, 150)
+                        .easing(TWEEN.Easing.Quadratic.In)
+                )
+                .start();
+        }
+    }
+    
+    function moveOrShakeGift() {
+        if (!gift) return;
 
-        if (step === 1) { 
-            // First actual click (when showing the 2nd message) - MOVE the gift to the center
-            new TWEEN.Tween(gift.position)
-                .to(CENTRAL_GIFT_POS, 800) 
-                .easing(TWEEN.Easing.Cubic.Out) 
-                .start();
+        if (step === 1) { 
+            // First actual click (when showing the 2nd message) - MOVE the gift to the center
+            new TWEEN.Tween(gift.position)
+                .to(CENTRAL_GIFT_POS, 800) 
+                .easing(TWEEN.Easing.Cubic.Out) 
+                .start();
 
-            // Rotate it as it moves
-            new TWEEN.Tween(gift.rotation)
-                .to({ y: gift.rotation.y + Math.PI * 2 }, 800)
-                .easing(TWEEN.Easing.Cubic.Out)
-                .start();
+            // Rotate it as it moves
+            new TWEEN.Tween(gift.rotation)
+                .to({ y: gift.rotation.y + Math.PI * 2 }, 800)
+                .easing(TWEEN.Easing.Cubic.Out)
+                .start();
 
-        } else if (step > 1) {
-            // Subsequent clicks - do a subtle shake at the center position
-            new TWEEN.Tween(gift.position)
-                .to({ x: CENTRAL_GIFT_POS.x + 0.1, y: 0.1, z: CENTRAL_GIFT_POS.z }, 100) 
-                .easing(TWEEN.Easing.Quadratic.Out)
-                .chain(
-                    new TWEEN.Tween(gift.position)
-                        .to({ x: CENTRAL_GIFT_POS.x, y: 0, z: CENTRAL_GIFT_POS.z }, 100) 
-                        .easing(TWEEN.Easing.Quadratic.In)
-                )
-                .start();
-        }
-    }
+        } else if (step > 1) {
+            // Subsequent clicks - do a subtle shake at the center position
+            new TWEEN.Tween(gift.position)
+                .to({ x: CENTRAL_GIFT_POS.x + 0.1, y: 0.1, z: CENTRAL_GIFT_POS.z }, 100) 
+                .easing(TWEEN.Easing.Quadratic.Out)
+                .chain(
+                    new TWEEN.Tween(gift.position)
+                        .to({ x: CENTRAL_GIFT_POS.x, y: 0, z: CENTRAL_GIFT_POS.z }, 100) 
+                        .easing(TWEEN.Easing.Quadratic.In)
+                )
+                .start();
+        }
+    }
 
 
-    function handleCatClick() {
-        // Hide the current bubble immediately before showing the new one
-        bubble.classList.remove('visible');
-        
-        // Check if all messages have already been displayed
-        if (step >= textSequence.length) {
-            // Keep showing the final message and animations
-            updateBubbleText(textSequence[textSequence.length - 1]);
-            playCatMeowAndJump();
-            moveOrShakeGift(); 
-            return;
-        }
-        
-        // Core interaction logic
-        playCatMeowAndJump();
-        moveOrShakeGift(); 
-        
-        // Delay showing the next message slightly
-        setTimeout(() => {
-             updateBubbleText(textSequence[step]);
-             step++; // Increment step AFTER displaying the message
-             
-             // ** THE CRITICAL FIX IS HERE **
-             // Show the button when step equals the length of the array (meaning the last message has been shown and step was incremented).
-             if (step >= textSequence.length) {
-                 surpriseBtn.classList.add('glowing-button');
-                 surpriseBtn.style.opacity = 1;
-                 surpriseBtn.style.transform = 'translateY(0)';
-             }
-        }, 300); 
-    }
+    function handleCatClick() {
+        // Hide the current bubble immediately before showing the new one
+        bubble.classList.remove('visible');
+        
+        // Check if all messages have already been displayed
+        if (step >= textSequence.length) {
+            // Keep showing the final message and animations
+            updateBubbleText(textSequence[textSequence.length - 1]);
+            playCatMeowAndJump();
+            moveOrShakeGift(); 
+            return;
+        }
+        
+        // Core interaction logic
+        playCatMeowAndJump();
+        moveOrShakeGift(); 
+        
+        // Delay showing the next message slightly
+        setTimeout(() => {
+             updateBubbleText(textSequence[step]);
+             step++; // Increment step AFTER displaying the message
+             
+             // ** THE CRITICAL FIX IS HERE **
+             // Show the button when step equals the length of the array (meaning the last message has been shown and step was incremented).
+             if (step >= textSequence.length) {
+                 surpriseBtn.classList.add('glowing-button');
+                 surpriseBtn.style.opacity = 1;
+                 surpriseBtn.style.transform = 'translateY(0)';
+             }
+        }, 300); 
+    }
 
-    // TWEEN.js initialization (UNCHANGED)
-    const tweenScript = document.createElement('script');
-    tweenScript.src = "https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.6.4/dist/tween.umd.js";
-    tweenScript.onload = () => {
-        function animateTWEEN(time) {
-            requestAnimationFrame(animateTWEEN);
-            TWEEN.update(time);
-        }
-        animateTWEEN();
-        init(); 
-        animate();
-        
-        // Set up click listener on the whole canvas area
-        renderer.domElement.addEventListener('click', handleCatClick, false);
-        // Initial call to show the first message
-        setTimeout(() => {
-             bubble.classList.add('visible');
-        }, 500);
-    };
-    document.head.appendChild(tweenScript);
+    // TWEEN.js initialization (UNCHANGED)
+    const tweenScript = document.createElement('script');
+    tweenScript.src = "https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@18.6.4/dist/tween.umd.js";
+    tweenScript.onload = () => {
+        function animateTWEEN(time) {
+            requestAnimationFrame(animateTWEEN);
+            TWEEN.update(time);
+        }
+        animateTWEEN();
+        init(); 
+        animate();
+        
+        // Set up click listener on the whole canvas area
+        renderer.domElement.addEventListener('click', handleCatClick, false);
+        // Initial call to show the first message
+        setTimeout(() => {
+             bubble.classList.add('visible');
+        }, 500);
+    };
+    document.head.appendChild(tweenScript);
 
 </script>
 </body>
-
 </html>
-
-
