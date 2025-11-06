@@ -1,0 +1,41 @@
+/*
+ * REALISM ENHANCEMENTS FOR GIFT BOX
+ * This file adds border-radius and box-shadow for a more realistic look.
+ */
+
+/* 1. Target the Main Gift Box and Lid */
+/* Assuming the main container for the box is one of these selectors. */
+.gift, 
+.box-body {
+  /* Softens the main corners for a less "digitally sharp" look */
+  border-radius: 8px; 
+  
+  /* Adds a subtle shadow for depth, making it look lifted and realistic */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 2. Target the Lid (if it's a separate element) */
+/* Assuming the lid has a selector like .box-lid or .lid */
+.box-lid,
+.box-top {
+  /* Round the corners of the lid, but perhaps slightly less than the body */
+  border-radius: 6px; 
+}
+
+/* 3. Target the Ribbon and Bow */
+/* Ribbons should also have a tiny bit of roundness to look less like sharp rectangles. */
+.ribbon, 
+.bow-part {
+  /* A very small radius to suggest a fabric-like softness */
+  border-radius: 2px;
+}
+
+/* --- Optional Enhancements for More Realism --- */
+
+/* If you have a hover effect, make the lift more pronounced */
+.gift:hover, 
+.box-body:hover {
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px); /* Lifts the box slightly on hover */
+  transition: all 0.3s ease-out; /* Smooth transition for the effect */
+}
